@@ -105,7 +105,23 @@ export function Nav() {
         }`}
         aria-hidden={!open}
       >
-        <div className="flex h-full flex-col px-6 pb-10 pt-24">
+        {/* Close button */}
+        <div className="flex h-16 items-center justify-between px-6">
+          <a href="#top" onClick={() => setOpen(false)} className="flex items-center gap-2 text-ink">
+            <span className="text-accent"><Mark className="h-[18px] w-[18px]" /></span>
+            <span className="font-display text-lg font-semibold tracking-tight">Self-made</span>
+          </a>
+          <button
+            onClick={() => setOpen(false)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/15"
+            aria-label="Cerrar menú"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div className="flex h-[calc(100%-4rem)] flex-col px-6 pb-10 pt-4">
           <div className="flex flex-col">
             {LINKS.map((l) => (
               <a
