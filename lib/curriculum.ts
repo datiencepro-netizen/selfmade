@@ -1,8 +1,16 @@
+export type LessonMeta = {
+  id: string;
+  title: string;
+  durationMin: number;
+  type: string;
+};
+
 export type Chapter = {
   id: string;
   title: string;
   durationMin: number;
   completed: boolean;
+  lessons?: LessonMeta[];
 };
 
 export type Sprint = {
@@ -37,7 +45,7 @@ export const curriculum: Sprint[] = [
     title: "Python para Datos: Fundamentos",
     icon: "🐍",
     chapters: [
-      { id: "s1-1", title: "Variables, tipos de datos y operaciones para análisis", durationMin: 50, completed: false },
+      { id: "s1-1", title: "Variables, tipos de datos y operaciones para análisis", durationMin: 50, completed: false, lessons: [{ id: "s1-1", title: "Variables, tipos de datos y operaciones para análisis", durationMin: 50, type: "chat" }] },
       { id: "s1-2", title: "Estructuras de datos: listas, tuplas, sets y diccionarios", durationMin: 60, completed: false },
       { id: "s1-3", title: "Condicionales y bucles orientados a procesamiento de datos", durationMin: 55, completed: false },
       { id: "s1-4", title: "Funciones, argumentos y buenas prácticas de código", durationMin: 70, completed: false },
