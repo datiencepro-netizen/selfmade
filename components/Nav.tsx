@@ -100,7 +100,7 @@ export function Nav() {
 
       {/* Mobile overlay — rendered outside <header> to avoid backdrop-filter stacking context */}
       <div
-        className={`fixed inset-0 z-[200] bg-paper transition-transform duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
+        className={`fixed inset-0 z-[200] overflow-hidden bg-paper transition-transform duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
           open ? "translate-y-0" : "pointer-events-none -translate-y-full"
         }`}
         aria-hidden={!open}
