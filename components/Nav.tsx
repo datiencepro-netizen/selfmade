@@ -58,6 +58,12 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2">
+          <a
+            href="/login"
+            className="hidden md:inline-flex items-center text-sm font-medium text-ink-soft hover:text-ink transition-colors px-3 py-2"
+          >
+            Iniciar sesión
+          </a>
           <span className="hidden md:inline-flex">
             <CTA href="/practica">
               Empieza <Arrow />
@@ -110,7 +116,14 @@ export function Nav() {
               </a>
             ))}
           </div>
-          <div className="mt-auto">
+          <div className="mt-auto flex flex-col gap-3">
+            <a
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="w-full text-center py-3 rounded-full border border-ink/15 font-medium text-ink transition-colors hover:bg-paper-soft"
+            >
+              Iniciar sesión
+            </a>
             <CTA href="/practica" className="w-full">
               Empieza ahora <Arrow />
             </CTA>
