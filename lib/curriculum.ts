@@ -3,6 +3,7 @@ export type LessonMeta = {
   title: string;
   durationMin: number;
   type: string;
+  completed?: boolean;
 };
 
 export type Chapter = {
