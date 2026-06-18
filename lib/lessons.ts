@@ -20,5 +20,7 @@ export type Lesson = {
   durationMin: number;
   type: "chat" | "text" | "video" | "conclusion";
   blocks: LessonBlock[];
+  version?: string;
+  lastReviewed?: string;
 };
 

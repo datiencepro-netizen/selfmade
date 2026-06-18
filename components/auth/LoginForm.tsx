@@ -15,13 +15,15 @@ export default function LoginForm() {
     setError("");
     setLoading(true);
 
-    // TODO: replace with real auth (NextAuth / Supabase / custom API)
-    try {
-      await new Promise((r) => setTimeout(r, 800)); // simulated request
-      if (email && password) {
-        router.push("/academia");
+      try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+      if (authError) {
+        setError("Correo o contraseña incorrectos.");
       } else {
-        setError("Completa todos los campos.");
+        router.push("/academia");
+        router.refresh();
       }
     } catch {
       setError("Error al iniciar sesión. Intenta de nuevo.");

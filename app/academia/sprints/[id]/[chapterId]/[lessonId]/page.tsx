@@ -1,7 +1,7 @@
 import { curriculum, formatDuration } from "@/lib/curriculum";
 import { sprint1Lessons } from "@/lib/lessons/sprint-1";
 import ChapterProgressBar from "@/components/academia/lesson/ChapterProgressBar";
-import ChatLesson from "@/components/academia/lesson/ChatLesson";
+import LessonClient from "@/components/academia/lesson/LessonClient";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -45,6 +45,19 @@ export default async function LessonPage({
   const lessonIndex = lessons.findIndex((l) => l.id === lessonId);
   const nextLesson = lessons[lessonIndex + 1];
   const nextChapter = sprint.chapters[chapterIndex + 1];
+  const isLastLesson = !nextLesson;
+
+  const nextHref = nextLesson
+    ? `/academia/sprints/${sprint.id}/${chapter.id}/${nextLesson.id}`
+    : nextChapter
+    ? `/academia/sprints/${sprint.id}/${nextChapter.id}`
+    : null;
+
+  const nextLabel = nextLesson
+    ? "Siguiente"
+    : nextChapter
+    ? "Siguiente capítulo"
+    : "";
 
   const progressSegments = lessons.map((l, i) => ({
     id: l.id,
@@ -83,39 +96,16 @@ export default async function LessonPage({
         <h1 className="font-display font-bold text-2xl text-ink leading-snug">{lesson.title}</h1>
       </div>
 
-      {/* Chat content */}
-      <div className="flex-1 max-w-2xl mx-auto w-full">
-        <ChatLesson blocks={lesson.blocks} />
-      </div>
-
-      {/* Footer */}
-      <div className="sticky bottom-0 bg-paper/90 backdrop-blur border-t border-line mt-8 px-4 py-3 flex items-center justify-center gap-3">
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-paper-soft border border-line text-sm text-ink-soft hover:text-ink hover:border-line-strong transition-colors">
-          <span>⭐</span> Valorar lección
-        </button>
-        {nextLesson ? (
-          <Link
-            href={`/academia/sprints/${sprint.id}/${chapter.id}/${nextLesson.id}`}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-ink text-paper text-sm font-medium hover:bg-ink/90 transition-colors"
-          >
-            Siguiente <span>→</span>
-          </Link>
-        ) : nextChapter ? (
-          <Link
-            href={`/academia/sprints/${sprint.id}/${nextChapter.id}`}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-ink text-paper text-sm font-medium hover:bg-ink/90 transition-colors"
-          >
-            Siguiente capítulo <span>→</span>
-          </Link>
-        ) : (
-          <Link
-            href={`/academia/sprints/${sprint.id}`}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-accent text-paper text-sm font-medium hover:bg-accent-ink transition-colors"
-          >
-            ¡Sprint completado! 🎉
-          </Link>
-        )}
-      </div>
+      {/* Chat + footer (client component handles completion) */}
+      <LessonClient
+        blocks={lesson.blocks}
+        lessonId={lesson.id}
+        chapterId={chapterId}
+        sprintId={id}
+        isLastLesson={isLastLesson}
+        nextHref={nextHref}
+        nextLabel={nextLabel}
+      />
     </div>
   );
 }

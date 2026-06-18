@@ -20,8 +20,19 @@ export default function RegisterForm() {
     }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 800));
-      router.push("/academia");
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      const { error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: name } },
+      });
+      if (authError) {
+        setError(authError.message);
+      } else {
+        router.push("/academia");
+        router.refresh();
+      }
     } catch {
       setError("Error al crear la cuenta. Intenta de nuevo.");
     } finally {

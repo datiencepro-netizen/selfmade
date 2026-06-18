@@ -66,7 +66,7 @@ export default async function ChapterPage({
             <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
               lesson.completed ? "border-green-500 bg-green-500" : "border-line-strong"
             }`}>
-              {(lesson as any).completed && (
+              {lesson.completed && (
                 <svg className="text-white" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
