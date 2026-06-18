@@ -96,10 +96,15 @@ export default async function SprintPage({ params }: { params: Promise<{ id: str
             </>
           );
 
+          const singleLesson = chapter.lessons?.length === 1 ? chapter.lessons[0] : null;
+          const chapterHref = singleLesson
+            ? `/academia/sprints/${sprint.id}/${chapter.id}/${singleLesson.id}`
+            : `/academia/sprints/${sprint.id}/${chapter.id}`;
+
           return isUnlocked ? (
             <Link
               key={chapter.id}
-              href={`/academia/sprints/${sprint.id}/${chapter.id}`}
+              href={chapterHref}
               className="group flex items-center gap-4 bg-card border border-line rounded-xl px-5 py-4 hover:border-line-strong hover:shadow-sm transition-all"
             >
               {inner}
