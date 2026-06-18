@@ -46,11 +46,11 @@ export const curriculum: Sprint[] = [
     icon: "🐍",
     chapters: [
       { id: "s1-1", title: "Variables, tipos de datos y operaciones para análisis", durationMin: 50, completed: false, lessons: [{ id: "s1-1", title: "Variables, tipos de datos y operaciones para análisis", durationMin: 50, type: "chat" }] },
-      { id: "s1-2", title: "Estructuras de datos: listas, tuplas, sets y diccionarios", durationMin: 60, completed: false },
-      { id: "s1-3", title: "Condicionales y bucles orientados a procesamiento de datos", durationMin: 55, completed: false },
-      { id: "s1-4", title: "Funciones, argumentos y buenas prácticas de código", durationMin: 70, completed: false },
-      { id: "s1-5", title: "Comprensiones de listas y expresiones lambda", durationMin: 45, completed: false },
-      { id: "s1-6", title: "Proyecto: Analizador de ventas y métricas básicas con Python", durationMin: 90, completed: false },
+      { id: "s1-2", title: "Estructuras de datos: listas, tuplas, sets y diccionarios", durationMin: 60, completed: false, lessons: [{ id: "s1-2", title: "Estructuras de datos: listas, tuplas, sets y diccionarios", durationMin: 60, type: "chat" }] },
+      { id: "s1-3", title: "Condicionales y bucles orientados a procesamiento de datos", durationMin: 55, completed: false, lessons: [{ id: "s1-3", title: "Condicionales y bucles orientados a procesamiento de datos", durationMin: 55, type: "chat" }] },
+      { id: "s1-4", title: "Funciones, argumentos y buenas prácticas de código", durationMin: 70, completed: false, lessons: [{ id: "s1-4", title: "Funciones, argumentos y buenas prácticas de código", durationMin: 70, type: "chat" }] },
+      { id: "s1-5", title: "Comprensiones de listas y expresiones lambda", durationMin: 45, completed: false, lessons: [{ id: "s1-5", title: "Comprensiones de listas y expresiones lambda", durationMin: 45, type: "chat" }] },
+      { id: "s1-6", title: "Proyecto: Analizador de ventas y métricas básicas con Python", durationMin: 90, completed: false, lessons: [{ id: "s1-6", title: "Proyecto: Analizador de ventas y métricas básicas con Python", durationMin: 90, type: "conclusion" }] },
     ],
   },
   {

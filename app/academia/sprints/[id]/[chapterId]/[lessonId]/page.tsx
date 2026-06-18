@@ -42,7 +42,7 @@ export default async function LessonPage({
   const lessons = chapter.lessons ?? [
     { id: chapter.id, title: chapter.title, durationMin: chapter.durationMin, type: "chat" },
   ];
-  const lessonIndex = lessons.findIndex((l) => l.id === params.lessonId);
+  const lessonIndex = lessons.findIndex((l) => l.id === lessonId);
   const nextLesson = lessons[lessonIndex + 1];
   const nextChapter = sprint.chapters[chapterIndex + 1];
 
