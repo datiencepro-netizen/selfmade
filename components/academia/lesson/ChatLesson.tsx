@@ -235,13 +235,21 @@ export default function ChatLesson({
   const completedRef = useRef(false);
   const lastBlockRef = useRef<HTMLDivElement>(null);
 
-  // Restore progress from localStorage after hydration, scroll to last seen block
+  // Restore progress from localStorage after hydration, scroll to last seen block.
+  // If a quiz exists in the restored range, stop there so the user must answer it.
   useEffect(() => {
     if (!lessonId) return;
     const saved = parseInt(localStorage.getItem(PROGRESS_KEY(lessonId)) ?? "1") || 1;
     const restored = Math.min(saved, localBlocks.length);
     if (restored > 1) {
-      setRevealed(restored);
+      let restoreTo = restored;
+      for (let i = restored - 1; i >= 0; i--) {
+        if (localBlocks[i].type === "quiz") {
+          restoreTo = i + 1;
+          break;
+        }
+      }
+      setRevealed(restoreTo);
       setTimeout(() => {
         lastBlockRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 150);
