@@ -108,15 +108,21 @@ function QuizBlock({
   question,
   options,
   onAnswer,
+  initialState,
 }: {
   question: string;
   options: QuizOption[];
   onAnswer: (result: { passed: boolean; attempts: number }) => void;
+  initialState?: { passed: boolean; attempts: number };
 }) {
-  const [lastSelected, setLastSelected] = useState<number | null>(null);
+  const correctIdx = options.findIndex((o) => o.correct);
+  // If restoring a previously answered quiz, show it locked in its completed state
+  const [lastSelected, setLastSelected] = useState<number | null>(
+    initialState ? correctIdx : null
+  );
   const [failedIndices, setFailedIndices] = useState<Set<number>>(new Set());
-  const [attempts, setAttempts] = useState(0);
-  const [passed, setPassed] = useState(false);
+  const [attempts, setAttempts] = useState(initialState?.attempts ?? 0);
+  const [passed, setPassed] = useState(initialState != null);
 
   function handleSelect(idx: number) {
     if (passed || failedIndices.has(idx)) return;
@@ -216,6 +222,8 @@ function SuccessBanner({ text }: { text: string }) {
 }
 
 const PROGRESS_KEY = (lessonId: string) => `lesson_progress:${lessonId}`;
+const QUIZ_KEY = (lessonId: string) => `lesson_quiz_states:${lessonId}`;
+type QuizSavedState = { passed: boolean; attempts: number };
 
 export default function ChatLesson({
   blocks,
@@ -232,24 +240,21 @@ export default function ChatLesson({
   const [revealed, setRevealed] = useState(1);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
   const [quizCount, setQuizCount] = useState(0);
+  const [quizSavedStates, setQuizSavedStates] = useState<Record<number, QuizSavedState>>({});
   const completedRef = useRef(false);
   const lastBlockRef = useRef<HTMLDivElement>(null);
 
-  // Restore progress from localStorage after hydration, scroll to last seen block.
-  // If a quiz exists in the restored range, stop there so the user must answer it.
+  // Restore block position and quiz states from localStorage, then scroll to last block.
   useEffect(() => {
     if (!lessonId) return;
     const saved = parseInt(localStorage.getItem(PROGRESS_KEY(lessonId)) ?? "1") || 1;
     const restored = Math.min(saved, localBlocks.length);
+    try {
+      const savedQuiz = JSON.parse(localStorage.getItem(QUIZ_KEY(lessonId)) ?? "{}") as Record<number, QuizSavedState>;
+      setQuizSavedStates(savedQuiz);
+    } catch { /* ignore malformed data */ }
     if (restored > 1) {
-      let restoreTo = restored;
-      for (let i = restored - 1; i >= 0; i--) {
-        if (localBlocks[i].type === "quiz") {
-          restoreTo = i + 1;
-          break;
-        }
-      }
-      setRevealed(restoreTo);
+      setRevealed(restored);
       setTimeout(() => {
         lastBlockRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 150);
@@ -266,7 +271,10 @@ export default function ChatLesson({
       const next = Math.min(n + 1, localBlocks.length);
       if (localBlocks[next - 1]?.type === "success") {
         completedRef.current = true;
-        if (lessonId) localStorage.removeItem(PROGRESS_KEY(lessonId));
+        if (lessonId) {
+          localStorage.removeItem(PROGRESS_KEY(lessonId));
+          localStorage.removeItem(QUIZ_KEY(lessonId));
+        }
         onComplete?.(quizResults);
       }
       return next;
@@ -328,7 +336,11 @@ export default function ChatLesson({
                 <QuizBlock
                   question={block.question}
                   options={block.options}
+                  initialState={quizSavedStates[idx]}
                   onAnswer={(result) => {
+                    const newStates = { ...quizSavedStates, [idx]: { passed: result.passed, attempts: result.attempts } };
+                    setQuizSavedStates(newStates);
+                    if (lessonId) localStorage.setItem(QUIZ_KEY(lessonId), JSON.stringify(newStates));
                     setQuizResults((prev) => [
                       ...prev,
                       { quiz_index: quizIndex, passed: result.passed, attempts: result.attempts },
