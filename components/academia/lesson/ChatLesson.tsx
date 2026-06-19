@@ -228,17 +228,24 @@ export default function ChatLesson({
   sprintId?: string;
   lessonId?: string;
 }) {
+  const [localBlocks, setLocalBlocks] = useState<LessonBlock[]>(blocks);
   const [revealed, setRevealed] = useState(1);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
   const [quizCount, setQuizCount] = useState(0);
   const completedRef = useRef(false);
+  const lastBlockRef = useRef<HTMLDivElement>(null);
 
-  // Restore progress from localStorage after hydration, then persist on every advance
+  // Restore progress from localStorage after hydration, scroll to last seen block
   useEffect(() => {
     if (!lessonId) return;
     const saved = parseInt(localStorage.getItem(PROGRESS_KEY(lessonId)) ?? "1") || 1;
-    const restored = Math.min(saved, blocks.length);
-    if (restored > 1) setRevealed(restored);
+    const restored = Math.min(saved, localBlocks.length);
+    if (restored > 1) {
+      setRevealed(restored);
+      setTimeout(() => {
+        lastBlockRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    }
   }, [lessonId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -248,8 +255,8 @@ export default function ChatLesson({
 
   function advance() {
     setRevealed((n) => {
-      const next = Math.min(n + 1, blocks.length);
-      if (blocks[next - 1]?.type === "success") {
+      const next = Math.min(n + 1, localBlocks.length);
+      if (localBlocks[next - 1]?.type === "success") {
         completedRef.current = true;
         if (lessonId) localStorage.removeItem(PROGRESS_KEY(lessonId));
         onComplete?.(quizResults);
@@ -258,15 +265,16 @@ export default function ChatLesson({
     });
   }
 
-  const visibleBlocks = blocks.slice(0, revealed);
+  const visibleBlocks = localBlocks.slice(0, revealed);
 
   return (
     <div className="space-y-4 pb-4">
       {visibleBlocks.map((block, idx) => {
+        const isLastBlock = idx === visibleBlocks.length - 1;
         switch (block.type) {
           case "instructor":
             return (
-              <div key={idx} className="animate-in fade-in duration-300 group">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300 group">
                 <div className="flex items-start gap-1">
                   <div className="flex-1">
                     <InstructorBubble text={block.text} />
@@ -284,17 +292,21 @@ export default function ChatLesson({
             );
           case "user":
             return (
-              <div key={idx} className="animate-in fade-in duration-300">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300">
                 <UserBubble text={block.text} />
               </div>
             );
           case "choice":
             return idx === revealed - 1 ? (
-              <div key={idx} className="animate-in fade-in duration-300">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300">
                 <ChoiceButtons
                   options={block.options}
                   onSelect={(opt) => {
-                    blocks.splice(idx + 1, 0, { type: "user", text: opt });
+                    setLocalBlocks(prev => [
+                      ...prev.slice(0, idx + 1),
+                      { type: "user", text: opt },
+                      ...prev.slice(idx + 1),
+                    ]);
                     advance();
                     setTimeout(advance, 300);
                   }}
@@ -304,7 +316,7 @@ export default function ChatLesson({
           case "quiz": {
             const quizIndex = quizCount;
             return (
-              <div key={idx} className="animate-in fade-in duration-300">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300">
                 <QuizBlock
                   question={block.question}
                   options={block.options}
@@ -322,13 +334,13 @@ export default function ChatLesson({
           }
           case "success":
             return (
-              <div key={idx} className="animate-in fade-in duration-300">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300">
                 <SuccessBanner text={block.text} />
               </div>
             );
           case "video":
             return (
-              <div key={idx} className="animate-in fade-in duration-300">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300">
                 <VideoCard
                   youtubeId={block.youtubeId}
                   title={block.title}
@@ -339,13 +351,13 @@ export default function ChatLesson({
             );
           case "accordion":
             return (
-              <div key={idx} className="animate-in fade-in duration-300">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300">
                 <AccordionRef title={block.title} items={block.items} />
               </div>
             );
           case "image":
             return (
-              <div key={idx} className="animate-in fade-in duration-300 my-2 max-w-[560px]">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300 my-2 max-w-[560px]">
                 <Image
                   src={block.src}
                   alt={block.alt}
@@ -360,7 +372,7 @@ export default function ChatLesson({
             );
           case "code":
             return (
-              <div key={idx} className="animate-in fade-in duration-300">
+              <div key={idx} ref={isLastBlock ? lastBlockRef : undefined} className="animate-in fade-in duration-300">
                 <CodeBlock
                   code={block.code}
                   language={block.language}
