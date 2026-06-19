@@ -23,6 +23,13 @@ export type ImageBlock = {
   caption?: string;
 };
 
+export type CodeBlock = {
+  type: "code";
+  code: string;
+  language?: string;
+  caption?: string;
+};
+
 export type LessonBlock =
   | InstructorBlock
   | UserBlock
@@ -31,7 +38,8 @@ export type LessonBlock =
   | SuccessBlock
   | VideoBlock
   | AccordionBlock
-  | ImageBlock;
+  | ImageBlock
+  | CodeBlock;
 
 export type Lesson = {
   id: string;

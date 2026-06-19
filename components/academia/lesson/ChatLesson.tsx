@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { LessonBlock, QuizOption } from "@/lib/lessons";
 import type { QuizResult } from "@/app/actions/progress";
 import SaveNoteButton from "./SaveNoteButton";
 import VideoCard from "./VideoCard";
 import AccordionRef from "./AccordionRef";
+import CodeBlock from "./CodeBlock";
 import Image from "next/image";
 
 function parseText(text: string) {
@@ -187,6 +188,8 @@ function SuccessBanner({ text }: { text: string }) {
   );
 }
 
+const PROGRESS_KEY = (lessonId: string) => `lesson_progress:${lessonId}`;
+
 export default function ChatLesson({
   blocks,
   onComplete,
@@ -198,15 +201,27 @@ export default function ChatLesson({
   sprintId?: string;
   lessonId?: string;
 }) {
-  const [revealed, setRevealed] = useState(1);
+  const [revealed, setRevealed] = useState(() => {
+    if (!lessonId || typeof window === "undefined") return 1;
+    const saved = parseInt(localStorage.getItem(PROGRESS_KEY(lessonId)) ?? "1") || 1;
+    return Math.min(saved, blocks.length);
+  });
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
   const [quizCount, setQuizCount] = useState(0);
+  const completedRef = useRef(false);
+
+  // Persist progress to localStorage on every advance
+  useEffect(() => {
+    if (!lessonId || completedRef.current) return;
+    localStorage.setItem(PROGRESS_KEY(lessonId), String(revealed));
+  }, [revealed, lessonId]);
 
   function advance() {
     setRevealed((n) => {
       const next = Math.min(n + 1, blocks.length);
-      // Check if next block is success
       if (blocks[next - 1]?.type === "success") {
+        completedRef.current = true;
+        if (lessonId) localStorage.removeItem(PROGRESS_KEY(lessonId));
         onComplete?.(quizResults);
       }
       return next;
@@ -313,13 +328,23 @@ export default function ChatLesson({
                 )}
               </div>
             );
+          case "code":
+            return (
+              <div key={idx} className="animate-in fade-in duration-300">
+                <CodeBlock
+                  code={block.code}
+                  language={block.language}
+                  caption={block.caption}
+                />
+              </div>
+            );
           default:
             return null;
         }
       })}
 
       {revealed < blocks.length &&
-        ["instructor", "video", "accordion", "image"].includes(visibleBlocks[visibleBlocks.length - 1]?.type ?? "") && (
+        ["instructor", "video", "accordion", "image", "code"].includes(visibleBlocks[visibleBlocks.length - 1]?.type ?? "") && (
           <div className="flex justify-center pt-2">
             <button
               onClick={advance}

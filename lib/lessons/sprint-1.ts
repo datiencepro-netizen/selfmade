@@ -91,7 +91,13 @@ export const sprint1Lessons: Lesson[] = [
       },
       {
         type: "instructor",
-        text: "Ejemplo completo aplicado a un reporte de ventas:\n\n`ventas_enero = 48500`\n`ventas_febrero = 52300`\n`ventas_marzo = 61100`\n\n`total_q1 = ventas_enero + ventas_febrero + ventas_marzo`\n`# total_q1 = 161900`\n\n`promedio_mensual = total_q1 / 3`\n`# promedio_mensual = 53966.67`\n\n`crecimiento = ventas_marzo - ventas_enero`\n`# crecimiento = 12600`\n\n`pct_crecimiento = (crecimiento / ventas_enero) * 100`\n`# pct_crecimiento = 25.98  (creció ~26% de enero a marzo)`",
+        text: "Ejemplo completo aplicado a un reporte de ventas. Observa cómo se calculan métricas reales con variables:",
+      },
+      {
+        type: "code",
+        language: "python",
+        code: "ventas_enero   = 48500\nventas_febrero = 52300\nventas_marzo   = 61100\n\ntotal_q1         = ventas_enero + ventas_febrero + ventas_marzo  # 161900\npromedio_mensual = total_q1 / 3                                   # 53966.67\n\ncrecimiento      = ventas_marzo - ventas_enero                    # 12600\npct_crecimiento  = (crecimiento / ventas_enero) * 100             # 25.98 %\n\nprint(f\"Q1 total:    ${total_q1:,}\")\nprint(f\"Promedio:    ${promedio_mensual:,.2f}\")\nprint(f\"Crecimiento: {pct_crecimiento:.1f}%\")",
+        caption: "Corre este código en tu entorno para ver los resultados",
       },
       {
         type: "quiz",
