@@ -4,6 +4,9 @@ import { useState } from "react";
 import type { LessonBlock, QuizOption } from "@/lib/lessons";
 import type { QuizResult } from "@/app/actions/progress";
 import SaveNoteButton from "./SaveNoteButton";
+import VideoCard from "./VideoCard";
+import AccordionRef from "./AccordionRef";
+import Image from "next/image";
 
 function parseText(text: string) {
   return text.split("\n").map((line, i) => {
@@ -278,13 +281,45 @@ export default function ChatLesson({
                 <SuccessBanner text={block.text} />
               </div>
             );
+          case "video":
+            return (
+              <div key={idx} className="animate-in fade-in duration-300">
+                <VideoCard
+                  youtubeId={block.youtubeId}
+                  title={block.title}
+                  caption={block.caption}
+                  timestamp={block.timestamp}
+                />
+              </div>
+            );
+          case "accordion":
+            return (
+              <div key={idx} className="animate-in fade-in duration-300">
+                <AccordionRef title={block.title} items={block.items} />
+              </div>
+            );
+          case "image":
+            return (
+              <div key={idx} className="animate-in fade-in duration-300 my-2 max-w-[560px]">
+                <Image
+                  src={block.src}
+                  alt={block.alt}
+                  width={560}
+                  height={315}
+                  className="rounded-xl border border-line w-full h-auto"
+                />
+                {block.caption && (
+                  <p className="mt-1.5 text-xs text-ink-faint">{block.caption}</p>
+                )}
+              </div>
+            );
           default:
             return null;
         }
       })}
 
       {revealed < blocks.length &&
-        visibleBlocks[visibleBlocks.length - 1]?.type === "instructor" && (
+        ["instructor", "video", "accordion", "image"].includes(visibleBlocks[visibleBlocks.length - 1]?.type ?? "") && (
           <div className="flex justify-center pt-2">
             <button
               onClick={advance}

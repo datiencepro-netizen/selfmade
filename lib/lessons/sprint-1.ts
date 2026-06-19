@@ -23,6 +23,12 @@ export const sprint1Lessons: Lesson[] = [
         text: "Python infiere el tipo de dato automáticamente según lo que escribes:\n\n`15000` → número entero (int)\n`149.99` → número decimal (float)\n`\"TechStore MX\"` → texto (str)\n`True` → verdadero/falso (bool)\n\nNo tienes que declarar el tipo como en Java o C++. Python lo detecta solo. Esto se llama **tipado dinámico**.",
       },
       {
+        type: "video",
+        youtubeId: "cQT33yu9pY8",
+        title: "Python Variables — Programming with Mosh",
+        caption: "Repaso visual de variables y tipos de datos · ~6 min",
+      },
+      {
         type: "choice",
         options: [
           "Interesante, ¿cómo sé qué tipo tiene una variable?",
@@ -155,6 +161,32 @@ export const sprint1Lessons: Lesson[] = [
         text: "Resumen de lo que dominaste hoy:\n\n✓ Variables como etiquetas para almacenar datos\n✓ Cuatro tipos primitivos: int, float, str, bool\n✓ Función `type()` para verificar tipos\n✓ Casting con `int()`, `float()`, `str()`, `bool()`\n✓ Reglas de nombres y convención snake_case\n✓ Operaciones aritméticas: `+`, `-`, `*`, `/`, `//`, `%`, `**`\n✓ Operadores de comparación: `==`, `!=`, `>`, `<`, `>=`, `<=`\n✓ Operadores lógicos: `and`, `or`, `not`\n✓ f-strings con formatos numéricos\n\nEn la próxima lección pasamos de datos individuales a **colecciones**: listas, tuplas, sets y diccionarios — las estructuras que usarás para manejar datasets completos.",
       },
       {
+        type: "accordion",
+        title: "Referencia rapida — Variables y tipos",
+        items: [
+          {
+            heading: "Cuatro tipos primitivos",
+            body: "`int` — Enteros: `42`, `-100`, `0`\n`float` — Decimales: `3.14`, `149.99`, `-0.5`\n`str` — Texto: `\"hola\"`, `'mundo'`, `f\"valor: {x}\"`\n`bool` — Solo `True` o `False` (con mayuscula inicial)",
+          },
+          {
+            heading: "Verificar y convertir tipos",
+            body: "`type(x)` — devuelve el tipo de x\n`int(\"42\")` → 42\n`float(\"3.14\")` → 3.14\n`str(100)` → \"100\"\n`bool(0)` → False | `bool(1)` → True\nOjo: `int(\"hola\")` lanza `ValueError`",
+          },
+          {
+            heading: "f-strings y formatos numericos",
+            body: "`f\"{valor}\"` — interpolacion basica\n`f\"{valor:.2f}\"` — 2 decimales: 3.14\n`f\"{valor:,}\"` — separador de miles: 1,500\n`f\"{valor:.1%}\"` — porcentaje: 25.7%\n`f\"{valor:>10}\"` — alineado a la derecha",
+          },
+          {
+            heading: "Convenciones de nombres (snake_case)",
+            body: "`ventas_totales = 50000`  snake_case correcto\n`precio_unitario = 149.99`  descriptivo\n`2do_trimestre`  empieza con numero (prohibido)\n`ventas-netas`  guion medio no permitido\n`VentasTotales`  PascalCase — solo para clases",
+          },
+          {
+            heading: "Operadores aritmeticos",
+            body: "`+` `-` `*` — suma, resta, multiplicacion\n`/` — division (siempre float en Python 3)\n`//` — division entera: `7 // 2` → 3\n`%` — modulo (resto): `7 % 2` → 1\n`**` — potencia: `2 ** 10` → 1024",
+          },
+        ],
+      },
+      {
         type: "success",
         text: "¡Lección completada!\n\nYa tienes la base de Python: sabes cómo guardar cualquier tipo de dato, operar sobre él y mostrarlo de forma profesional.\n\nEsto es exactamente lo que usarás en cada análisis, desde un simple reporte hasta un modelo de machine learning.",
       },
@@ -181,6 +213,12 @@ export const sprint1Lessons: Lesson[] = [
       {
         type: "instructor",
         text: "**Listas — la estructura más usada en Data Science**\n\nSe definen con corchetes `[]`:\n\n`ventas_semana = [12000, 15400, 9800, 18200, 21000, 7500, 11300]`\n`productos = [\"Laptop\", \"Mouse\", \"Teclado\", \"Monitor\"]`\n`precios = [22999.0, 349.0, 549.0, 8500.0]`\n\nCaracterísticas clave:\n- Mantienen el orden de inserción\n- Permiten elementos duplicados\n- Se pueden modificar después de crear\n- Pueden mezclar tipos (aunque no es recomendable en análisis)",
+      },
+      {
+        type: "video",
+        youtubeId: "W8KRzm-HUcc",
+        title: "Python Lists, Tuples, Sets & Dictionaries — Corey Schafer",
+        caption: "Guia completa de estructuras de datos en Python · ~12 min",
       },
       {
         type: "instructor",
@@ -282,6 +320,32 @@ export const sprint1Lessons: Lesson[] = [
         text: "Resumen de cuándo usar cada estructura:\n\n`list`  → datos ordenados que pueden cambiar, con duplicados permitidos\n        Ejemplos: ventas diarias, lista de productos, historial de precios\n\n`tuple` → datos fijos que no deben modificarse\n        Ejemplos: coordenadas, configuración, múltiples retornos\n\n`set`   → datos únicos, búsquedas rápidas, operaciones de conjuntos\n        Ejemplos: IDs únicos, categorías disponibles, comparar dos grupos\n\n`dict`  → datos con etiqueta (clave → valor), estructuras tipo registro\n        Ejemplos: perfil de cliente, producto con atributos, conteos por categoría\n\nLa elección correcta hace tu código más legible y más eficiente.",
       },
       {
+        type: "accordion",
+        title: "Referencia rapida — Estructuras de datos",
+        items: [
+          {
+            heading: "list [] — Ordenada, mutable, duplicados OK",
+            body: "`lista = [1, 2, 3]`\n`lista[0]` → primer elemento\n`lista[-1]` → ultimo elemento\n`lista[1:3]` → slicing\n`lista.append(x)` — agrega al final\n`lista.sort()` — ordena in-place\n`sorted(lista)` — devuelve nueva lista ordenada\n`len(lista)`, `sum(lista)`, `max(lista)`, `min(lista)`",
+          },
+          {
+            heading: "tuple () — Inmutable, valores fijos",
+            body: "`tupla = (19.43, -99.13)`\n`lat, lon = tupla`  — desempaquetado\nInmutable: `tupla[0] = x` lanza `TypeError`\nUsar para: coordenadas, configuracion, retornos multiples",
+          },
+          {
+            heading: "set {} — Unicos, sin orden, busqueda O(1)",
+            body: "`s = {\"a\", \"b\", \"c\"}`  — sin duplicados\n`set(lista)` — eliminar duplicados de una lista\n`x in s` — verificar pertenencia (instantaneo)\n`a & b` — interseccion\n`a | b` — union\n`a - b` — diferencia",
+          },
+          {
+            heading: "dict {k: v} — Clave → valor",
+            body: "`d = {\"nombre\": \"Ana\", \"ventas\": 87000}`\n`d[\"nombre\"]` → \"Ana\"  (KeyError si no existe)\n`d.get(\"nombre\", \"default\")` — seguro\n`d[\"nueva\"] = valor` — agregar/modificar\n`del d[\"clave\"]` — eliminar\n`d.keys()`, `d.values()`, `d.items()`",
+          },
+          {
+            heading: "Cuando usar cada una",
+            body: "`list` — datos secuenciales que cambian: historial de ventas\n`tuple` — valores fijos: coordenadas (lat, lon)\n`set` — IDs unicos, categorias disponibles\n`dict` — registros con atributos: perfil de cliente",
+          },
+        ],
+      },
+      {
         type: "success",
         text: "¡Excelente trabajo!\n\nYa dominas las cuatro estructuras de datos de Python. Esto es lo que separa a alguien que sabe \"algo de Python\" de alguien que puede trabajar con datos reales.\n\nEn la siguiente lección aprenderás a tomar decisiones y repetir operaciones sobre estas estructuras — la base del procesamiento de datos.",
       },
@@ -304,6 +368,12 @@ export const sprint1Lessons: Lesson[] = [
       {
         type: "instructor",
         text: "Los datos por sí solos no bastan. En análisis real necesitas dos capacidades fundamentales:\n\n1. **Tomar decisiones**: \"Si la venta supera el objetivo, márcarla como exitosa; si no, como pendiente.\"\n2. **Repetir operaciones**: \"Para cada uno de los 10,000 clientes, calcula su ticket promedio.\"\n\nEstas dos capacidades se implementan con **condicionales** (`if`) y **bucles** (`for`, `while`). Son el motor de cualquier script de análisis.",
+      },
+      {
+        type: "video",
+        youtubeId: "tCrD7tLisUM",
+        title: "Python if/else y bucles for/while — Tutorial completo",
+        caption: "Condicionales y bucles aplicados a procesamiento de datos · ~20 min",
       },
       {
         type: "instructor",
@@ -393,6 +463,32 @@ export const sprint1Lessons: Lesson[] = [
         text: "**Patrón completo: análisis de ventas con condicionales y bucles**\n\n`ventas = [\n    {\"vendedor\": \"Ana\",   \"total\": 87000},\n    {\"vendedor\": \"Luis\",  \"total\": 43000},\n    {\"vendedor\": \"María\", \"total\": 105000},\n    {\"vendedor\": \"Pedro\", \"total\": 61000},\n]`\n`objetivo = 80000`\n\n`print(\"=\" * 40)`\n`for v in ventas:`\n`    estado = \"✓ META\" if v[\"total\"] >= objetivo else \"✗ Pendiente\"`\n`    print(f\"{v['vendedor']:10} ${v['total']:>10,}  {estado}\")`\n\n`cumplieron = [v for v in ventas if v[\"total\"] >= objetivo]`\n`print(f\"\\n{len(cumplieron)}/{len(ventas)} vendedores alcanzaron la meta\")`",
       },
       {
+        type: "accordion",
+        title: "Referencia rapida — Control de flujo",
+        items: [
+          {
+            heading: "if / elif / else",
+            body: "`if condicion:`\n`    accion()`\n`elif otra_condicion:`\n`    otra_accion()`\n`else:`\n`    accion_default()`\nTernario: `valor = \"A\" if cond else \"B\"`",
+          },
+          {
+            heading: "for — iterar colecciones",
+            body: "`for item in lista:`\n`for i, item in enumerate(lista):`\n`for a, b in zip(lista1, lista2):`\n`for i in range(inicio, fin, paso):`  — fin excluido\n`break` — detener el bucle\n`continue` — saltar a siguiente iteracion",
+          },
+          {
+            heading: "while — iterar por condicion",
+            body: "`while condicion:`\n`    # ejecutar mientras condicion sea True`\n`    if salida: break`\nSiempre asegurar que la condicion pueda volverse False",
+          },
+          {
+            heading: "Operadores logicos y de comparacion",
+            body: "`==` `!=` `>` `<` `>=` `<=` — comparacion\n`and` — ambas condiciones True\n`or` — al menos una True\n`not` — invierte el valor\n`x in coleccion` — verificar pertenencia",
+          },
+          {
+            heading: "Patrones comunes en analisis",
+            body: "Acumulador: `total = 0; for v in ventas: total += v`\nFiltrado: `for v in ventas: if v > 0: procesar(v)`\nBuscar primero: `for v in ventas: if cond: break`\nEnumerar: `for i, v in enumerate(ventas, 1): print(i, v)`",
+          },
+        ],
+      },
+      {
         type: "success",
         text: "¡Lección completada!\n\nAhora sabes cómo hacer que Python tome decisiones y procese colecciones enteras de datos de forma automatizada.\n\nEsta combinación — estructuras de datos + condicionales + bucles — es el núcleo de cualquier script de análisis. En la siguiente lección aprenderás a empaquetar toda esta lógica en funciones reutilizables.",
       },
@@ -415,6 +511,12 @@ export const sprint1Lessons: Lesson[] = [
       {
         type: "instructor",
         text: "Hasta ahora escribiste código que ejecuta pasos en secuencia. Funciona, pero tiene un problema: si necesitas el mismo cálculo en 10 lugares distintos, lo copias 10 veces. Cuando encuentras un error, tienes que corregirlo en los 10 sitios.\n\nLas **funciones** resuelven esto. Son bloques de código con nombre que puedes reutilizar cuantas veces quieras.\n\nPrincipio fundamental: **DRY — Don't Repeat Yourself**. Si escribes lo mismo más de dos veces, conviértelo en función.",
+      },
+      {
+        type: "video",
+        youtubeId: "R1mKou6oc94",
+        title: "Python Functions, *args and **kwargs — Corey Schafer",
+        caption: "Funciones avanzadas con parametros flexibles · ~18 min",
       },
       {
         type: "instructor",
@@ -491,6 +593,32 @@ export const sprint1Lessons: Lesson[] = [
         text: "Ejemplo completo — sistema de análisis de vendedores:\n\n`def calcular_comision(ventas, tasa=0.08):`\n`    return ventas * tasa`\n\n`def clasificar_vendedor(ventas, objetivo):`\n`    pct = ventas / objetivo`\n`    if pct >= 1.2: return \"Estrella\"`\n`    elif pct >= 1.0: return \"Cumplido\"`\n`    elif pct >= 0.8: return \"Cerca\"`\n`    else: return \"Bajo rendimiento\"`\n\n`def reporte_vendedor(nombre, ventas, objetivo=80000):`\n`    comision = calcular_comision(ventas)`\n`    categoria = clasificar_vendedor(ventas, objetivo)`\n`    return {\"nombre\": nombre, \"ventas\": ventas, \"comision\": comision, \"categoria\": categoria}`\n\n`ana = reporte_vendedor(\"Ana\", 95000)`\n`print(f\"{ana['nombre']}: {ana['categoria']} — Comisión: ${ana['comision']:,}\")`",
       },
       {
+        type: "accordion",
+        title: "Referencia rapida — Funciones",
+        items: [
+          {
+            heading: "Anatomia de una funcion",
+            body: "`def nombre(param, opcional=default):`\n`    \"\"\"Docstring: que hace, que recibe, que retorna.\"\"\"`\n`    resultado = ...`\n`    return resultado`\nType hints: `def f(x: int, y: float = 0.0) -> str:`",
+          },
+          {
+            heading: "Tipos de parametros",
+            body: "Posicional: `f(\"Ana\", \"Norte\")`  — orden importa\nKeyword: `f(nombre=\"Ana\", region=\"Norte\")`  — orden libre\n`*args` — posicionales variables (llega como tupla)\n`**kwargs` — keyword variables (llega como dict)",
+          },
+          {
+            heading: "Retornos multiples",
+            body: "`def f(): return a, b, c`  — retorna tupla\n`x, y, z = f()`  — desempaquetado\n`resultado = f()  # resultado es una tupla`",
+          },
+          {
+            heading: "Scope — donde viven las variables",
+            body: "Variables dentro de la funcion son LOCALES\nLas funciones pueden leer variables globales\nPara modificar global: usar `global var` (evitar)\nMejor practica: pasar todo como parametros",
+          },
+          {
+            heading: "Buenas practicas",
+            body: "DRY — Don't Repeat Yourself\nUna responsabilidad por funcion\nNombre descriptivo con verbo: `calcular_`, `generar_`, `validar_`\nDocstring para funciones publicas\nType hints para claridad en equipos",
+          },
+        ],
+      },
+      {
         type: "success",
         text: "¡Excelente avance!\n\nYa sabes definir funciones profesionales: con parámetros flexibles, múltiples retornos, docstrings, type hints y una sola responsabilidad.\n\nEn la siguiente lección aprenderás comprensiones de lista y lambdas — las herramientas que hacen a Python particularmente elegante para transformar datos.",
       },
@@ -513,6 +641,12 @@ export const sprint1Lessons: Lesson[] = [
       {
         type: "instructor",
         text: "Llegamos a una de las características que hace a Python particularmente popular entre Data Scientists: las **comprensiones** y las **lambdas**.\n\nEstas herramientas permiten escribir transformaciones de datos en una sola línea elegante, sin sacrificar legibilidad.\n\nVamos a comparar el estilo tradicional con el estilo pythónico para que veas la diferencia.",
+      },
+      {
+        type: "video",
+        youtubeId: "04Ytx7wR-ZY",
+        title: "List Comprehensions and Lambda — Keith Galli",
+        caption: "Comprensiones y lambdas — el estilo elegante de Python · ~15 min",
       },
       {
         type: "instructor",
@@ -585,6 +719,32 @@ export const sprint1Lessons: Lesson[] = [
         text: "**¿Cuándo NO usar comprehensions?**\n\nLas comprehensions son poderosas pero pueden volverse ilegibles:\n\n`# Demasiado complejo — mejor usar un bucle for:`\n`resultado = [f(x) for x in data if g(x) for y in x if h(y)]`\n\nUsa comprehension cuando:\n✓ La lógica cabe cómodamente en una línea\n✓ La intención es clara a primera vista\n✓ Estás transformando o filtrando una colección\n\nUsa bucle for cuando:\n✗ Necesitas más de una condición anidada compleja\n✗ El cuerpo tiene múltiples líneas de lógica\n✗ Necesitas efectos secundarios (logs, actualizaciones de estado)\n\nLegibilidad > concisión. Siempre.",
       },
       {
+        type: "accordion",
+        title: "Referencia rapida — Comprensiones y lambdas",
+        items: [
+          {
+            heading: "List comprehension — sintaxis completa",
+            body: "Basica: `[expr for x in iterable]`\nCon filtro: `[expr for x in iterable if cond]`\nCon ternario: `[a if cond else b for x in iterable]`\nAnidada: `[f(x,y) for x in lista1 for y in lista2]`",
+          },
+          {
+            heading: "Dict y set comprehensions",
+            body: "Dict: `{k: v for k, v in pairs}`\nDict con filtro: `{k: v for k, v in d.items() if v > 0}`\nSet: `{expr for x in iterable}` — sin duplicados",
+          },
+          {
+            heading: "Generator expressions — para datasets grandes",
+            body: "`sum(x for x in datos if x > 0)` — no carga en memoria\nUsar dentro de `sum()`, `max()`, `min()`, `any()`, `all()`\nCon lista grande: `(expr for x in iterable)` ahorra RAM",
+          },
+          {
+            heading: "Lambda — funcion anonima de una linea",
+            body: "`lambda x: x * 2`  — equivale a `def f(x): return x * 2`\n`lambda x, y: x + y`  — multiples argumentos\nUso principal: `sorted(lista, key=lambda x: x[\"campo\"])`\nTambien: `filter(lambda x: x > 0, lista)`",
+          },
+          {
+            heading: "Cuando usar comprehension vs bucle for",
+            body: "Usar comprehension: logica simple, una linea legible\nUsar bucle for: logica compleja, efectos secundarios, >2 anidamientos\nRegla: si al leerla en voz alta no queda claro, usa el bucle",
+          },
+        ],
+      },
+      {
         type: "success",
         text: "¡Dominas las herramientas más elegantes de Python!\n\nList comprehensions, dict comprehensions, generators y lambdas son señas de identidad del código Python profesional. En Pandas (Sprint 3) las usarás constantemente con `apply()`, `groupby()` y transformaciones de columnas.\n\nEn la última lección de este sprint integras todo en un proyecto real.",
       },
@@ -611,6 +771,12 @@ export const sprint1Lessons: Lesson[] = [
       {
         type: "instructor",
         text: "**Dataset del proyecto**\n\nTrabajamos con registros de ventas del Q1 2025:\n\n`ventas_q1 = [\n    {\"vendedor\": \"Ana García\",   \"region\": \"Norte\", \"enero\": 48500, \"febrero\": 52300, \"marzo\": 61100},\n    {\"vendedor\": \"Luis Mora\",    \"region\": \"Sur\",   \"enero\": 31200, \"febrero\": 28900, \"marzo\": 35400},\n    {\"vendedor\": \"María López\",  \"region\": \"Norte\", \"enero\": 67000, \"febrero\": 71500, \"marzo\": 83200},\n    {\"vendedor\": \"Pedro Soto\",   \"region\": \"Centro\",\"enero\": 42100, \"febrero\": 39800, \"marzo\": 44600},\n    {\"vendedor\": \"Carmen Ruiz\",  \"region\": \"Sur\",   \"enero\": 55000, \"febrero\": 58200, \"marzo\": 62700},\n    {\"vendedor\": \"Jorge Vega\",   \"region\": \"Centro\",\"enero\": 29800, \"febrero\": 31200, \"marzo\": 28500},\n]`",
+      },
+      {
+        type: "video",
+        youtubeId: "mF36ekZFhSI",
+        title: "Python Data Analysis Project — Start to End",
+        caption: "Proyecto completo de analisis de datos con Python puro · ~30 min",
       },
       {
         type: "choice",

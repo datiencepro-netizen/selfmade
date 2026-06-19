@@ -4,13 +4,34 @@ export type ChoiceBlock = { type: "choice"; options: string[] };
 export type QuizOption = { text: string; correct: boolean; feedback: string };
 export type QuizBlock = { type: "quiz"; question: string; options: QuizOption[] };
 export type SuccessBlock = { type: "success"; text: string };
+export type VideoBlock = {
+  type: "video";
+  youtubeId: string;
+  title: string;
+  caption?: string;
+  timestamp?: number;
+};
+export type AccordionBlock = {
+  type: "accordion";
+  title: string;
+  items: { heading: string; body: string }[];
+};
+export type ImageBlock = {
+  type: "image";
+  src: string;
+  alt: string;
+  caption?: string;
+};
 
 export type LessonBlock =
   | InstructorBlock
   | UserBlock
   | ChoiceBlock
   | QuizBlock
-  | SuccessBlock;
+  | SuccessBlock
+  | VideoBlock
+  | AccordionBlock
+  | ImageBlock;
 
 export type Lesson = {
   id: string;
