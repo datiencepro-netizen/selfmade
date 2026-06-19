@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { LessonBlock, QuizOption } from "@/lib/lessons";
 import type { QuizResult } from "@/app/actions/progress";
+import SaveNoteButton from "./SaveNoteButton";
 
 function parseText(text: string) {
   return text.split("\n").map((line, i) => {
@@ -186,9 +187,13 @@ function SuccessBanner({ text }: { text: string }) {
 export default function ChatLesson({
   blocks,
   onComplete,
+  sprintId,
+  lessonId,
 }: {
   blocks: LessonBlock[];
   onComplete?: (quizResults: QuizResult[]) => void;
+  sprintId?: string;
+  lessonId?: string;
 }) {
   const [revealed, setRevealed] = useState(1);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
@@ -213,8 +218,20 @@ export default function ChatLesson({
         switch (block.type) {
           case "instructor":
             return (
-              <div key={idx} className="animate-in fade-in duration-300">
-                <InstructorBubble text={block.text} />
+              <div key={idx} className="animate-in fade-in duration-300 group">
+                <div className="flex items-start gap-1">
+                  <div className="flex-1">
+                    <InstructorBubble text={block.text} />
+                  </div>
+                  {sprintId && lessonId && (
+                    <SaveNoteButton
+                      sprintId={sprintId}
+                      lessonId={lessonId}
+                      blockIndex={idx}
+                      blockPreview={block.text.slice(0, 120)}
+                    />
+                  )}
+                </div>
               </div>
             );
           case "user":

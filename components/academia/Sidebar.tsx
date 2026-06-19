@@ -36,6 +36,17 @@ const navItems = [
       </svg>
     ),
   },
+  {
+    href: "/academia/cuaderno",
+    label: "Mi Cuaderno",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 6h4" /><path d="M2 10h4" /><path d="M2 14h4" /><path d="M2 18h4" />
+        <rect width="16" height="20" x="6" y="2" rx="2" />
+        <path d="M10 8h6" /><path d="M10 12h6" /><path d="M10 16h4" />
+      </svg>
+    ),
+  },
 ];
 
 export default function AcademiaSidebar() {

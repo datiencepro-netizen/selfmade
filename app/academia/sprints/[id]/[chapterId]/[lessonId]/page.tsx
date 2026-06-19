@@ -2,6 +2,7 @@ import { curriculum, formatDuration } from "@/lib/curriculum";
 import { sprint1Lessons } from "@/lib/lessons/sprint-1";
 import ChapterProgressBar from "@/components/academia/lesson/ChapterProgressBar";
 import LessonClient from "@/components/academia/lesson/LessonClient";
+import AIConsultButton from "@/components/academia/lesson/AIConsultButton";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -65,8 +66,30 @@ export default async function LessonPage({
     current: i === lessonIndex,
   }));
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    name: lesson.title,
+    educationalLevel: "beginner",
+    learningResourceType: "lesson",
+    isPartOf: `${sprint.label} — ${sprint.title}`,
+    timeRequired: `PT${lesson.durationMin}M`,
+  };
+
   return (
-    <div className="flex flex-col min-h-full">
+    <div
+      className="flex flex-col min-h-full"
+      data-lesson-id={lesson.id}
+      data-sprint-id={sprint.id}
+      data-sprint-title={sprint.title}
+      data-chapter-title={chapter.title}
+      data-lesson-title={lesson.title}
+      data-platform="Self-made bootcamp Data Scientist"
+    >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Breadcrumb */}
       <nav className="mb-5 flex items-center gap-2 text-xs text-ink-faint flex-wrap">
         <Link href="/academia" className="hover:text-ink transition-colors">Contenido</Link>
@@ -96,6 +119,11 @@ export default async function LessonPage({
         <h1 className="font-display font-bold text-2xl text-ink leading-snug">{lesson.title}</h1>
       </div>
 
+      {/* AI context hint — legible por Atlas/Claude extension */}
+      <div className="sr-only" data-ai-context="true" aria-hidden="false">
+        Plataforma: Self-made bootcamp Data Scientist | {sprint.label}: {sprint.title} | Lección: {lesson.title} | Capítulo {chapterIndex + 1} de {sprint.chapters.length}
+      </div>
+
       {/* Chat + footer (client component handles completion) */}
       <LessonClient
         blocks={lesson.blocks}
@@ -105,6 +133,9 @@ export default async function LessonPage({
         isLastLesson={isLastLesson}
         nextHref={nextHref}
         nextLabel={nextLabel}
+        lessonTitle={lesson.title}
+        sprintTitle={sprint.title}
+        chapterTitle={chapter.title}
       />
     </div>
   );

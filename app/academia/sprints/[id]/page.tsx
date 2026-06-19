@@ -96,7 +96,8 @@ export default async function SprintPage({ params }: { params: Promise<{ id: str
             </>
           );
 
-          const singleLesson = chapter.lessons?.length === 1 ? chapter.lessons[0] : null;
+          const lessonId = chapter.lessons?.[0]?.id ?? chapter.id;
+          const singleLesson = !chapter.lessons || chapter.lessons.length === 1 ? { id: lessonId } : null;
           const chapterHref = singleLesson
             ? `/academia/sprints/${sprint.id}/${chapter.id}/${singleLesson.id}`
             : `/academia/sprints/${sprint.id}/${chapter.id}`;
