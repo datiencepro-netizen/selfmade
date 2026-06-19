@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import type { LessonBlock, QuizOption } from "@/lib/lessons";
 import type { QuizResult } from "@/app/actions/progress";
 import SaveNoteButton from "./SaveNoteButton";
@@ -8,6 +8,33 @@ import VideoCard from "./VideoCard";
 import AccordionRef from "./AccordionRef";
 import CodeBlock from "./CodeBlock";
 import Image from "next/image";
+
+const PY_KW = new Set(["def","class","if","elif","else","for","while","return","import","from","and","or","not","in","is","True","False","None","lambda","with","as","try","except","finally","raise","pass","break","continue","print","len","range","type","int","float","str","bool","list","tuple","set","dict"]);
+
+function tokenColor(kind: string): string {
+  switch (kind) {
+    case "kw":  return "#a855f7";  // purple
+    case "str": return "#22c55e";  // green
+    case "num": return "#f97316";  // orange
+    case "cmt": return "#6b7280";  // gray
+    case "fn":  return "#60a5fa";  // blue
+    default:    return "#e2e8f0";
+  }
+}
+
+function highlightCode(code: string): React.ReactNode[] {
+  const tokens: { kind: string; val: string }[] = [];
+  let i = 0;
+  while (i < code.length) {
+    if (code[i] === "#") { const e = code.indexOf("\n", i); const v = e === -1 ? code.slice(i) : code.slice(i, e); tokens.push({ kind: "cmt", val: v }); i += v.length; continue; }
+    if (code.startsWith('"""', i) || code.startsWith("'''", i)) { const q = code.slice(i,i+3); const e = code.indexOf(q,i+3); const v = e === -1 ? code.slice(i) : code.slice(i,e+3); tokens.push({kind:"str",val:v}); i+=v.length; continue; }
+    if (code[i]==='"'||code[i]==="'") { const q=code[i]; let j=i+1; while(j<code.length&&code[j]!==q&&code[j]!=="\n"){if(code[j]==="\\")j++;j++;} tokens.push({kind:"str",val:code.slice(i,j+1)}); i=j+1; continue; }
+    const nm=code.slice(i).match(/^\d+\.?\d*/); if(nm&&(i===0||!/\w/.test(code[i-1]))){tokens.push({kind:"num",val:nm[0]});i+=nm[0].length;continue;}
+    const wm=code.slice(i).match(/^[a-zA-Z_]\w*/); if(wm){const w=wm[0];const after=code.slice(i+w.length).trimStart();tokens.push({kind:PY_KW.has(w)?"kw":after.startsWith("(")?"fn":"plain",val:w});i+=w.length;continue;}
+    tokens.push({kind:"plain",val:code[i]});i++;
+  }
+  return tokens.map((t,k)=><span key={k} style={{color:tokenColor(t.kind)}}>{t.val}</span>);
+}
 
 function parseText(text: string) {
   return text.split("\n").map((line, i) => {
@@ -18,9 +45,9 @@ function parseText(text: string) {
           part.startsWith("`") && part.endsWith("`") ? (
             <code
               key={j}
-              className="font-mono text-sm bg-line/60 px-1.5 py-0.5 rounded text-ink"
+              className="font-mono text-sm bg-[#0f0f1a] px-1.5 py-0.5 rounded border border-white/10"
             >
-              {part.slice(1, -1)}
+              {highlightCode(part.slice(1, -1))}
             </code>
           ) : (
             <span key={j}>{part}</span>
@@ -201,16 +228,19 @@ export default function ChatLesson({
   sprintId?: string;
   lessonId?: string;
 }) {
-  const [revealed, setRevealed] = useState(() => {
-    if (!lessonId || typeof window === "undefined") return 1;
-    const saved = parseInt(localStorage.getItem(PROGRESS_KEY(lessonId)) ?? "1") || 1;
-    return Math.min(saved, blocks.length);
-  });
+  const [revealed, setRevealed] = useState(1);
   const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
   const [quizCount, setQuizCount] = useState(0);
   const completedRef = useRef(false);
 
-  // Persist progress to localStorage on every advance
+  // Restore progress from localStorage after hydration, then persist on every advance
+  useEffect(() => {
+    if (!lessonId) return;
+    const saved = parseInt(localStorage.getItem(PROGRESS_KEY(lessonId)) ?? "1") || 1;
+    const restored = Math.min(saved, blocks.length);
+    if (restored > 1) setRevealed(restored);
+  }, [lessonId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (!lessonId || completedRef.current) return;
     localStorage.setItem(PROGRESS_KEY(lessonId), String(revealed));
